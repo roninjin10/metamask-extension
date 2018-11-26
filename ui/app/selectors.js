@@ -1,4 +1,7 @@
 const abi = require('human-standard-token-abi')
+const {
+  loadLocalStorageData,
+} = require('../lib/local-storage-helpers')
 
 import {
   transactionsSelector,
@@ -36,6 +39,7 @@ const selectors = {
   getCurrentViewContext,
   getTotalUnapprovedCount,
   preferencesSelector,
+  getMetaMaskAccounts,
 }
 
 module.exports = selectors
@@ -54,7 +58,20 @@ function getSelectedIdentity (state) {
 }
 
 function getMetaMaskAccounts (state) {
-  return state.metamask.accounts
+  const currentAccounts = state.metamask.accounts
+  const cachedAccounts = loadLocalStorageData('accounts')
+  const selectedAccounts = {}
+
+  Object.keys(currentAccounts).forEach(accountID => {
+    const account = currentAccounts[accountID]
+    if (account.balance === null) {
+      selectedAccounts[accountID] = cachedAccounts[accountID]
+    } else {
+      selectedAccounts[accountID] = account
+    }
+  })
+
+  return selectedAccounts
 }
 
 function getSelectedAccount (state) {
