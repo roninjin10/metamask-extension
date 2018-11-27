@@ -7,7 +7,7 @@ module.exports = getObjStructure
 
 // {
 //   "data": {
-//     "CurrencyController": {
+//     "CurrencyRatesController": {
 //       "conversionDate": "number",
 //       "conversionRate": "number",
 //       "currentCurrency": "string"
